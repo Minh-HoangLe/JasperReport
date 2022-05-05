@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.clv.jasperReport.mappers.EmployeeMapper">
+
+    <resultMap type="Employee" id="EmployeeMap">
+		<result property="id" column="id" />
+		<result property="firstName" column="first_name" />
+		<result property="lastName" column="last_name" />
+		<result property="salary" column="salary" />
+	</resultMap>	
+
+    <select id="selectAllEmployees" resultMap="EmployeeMap">
+        SELECT 
+            id, first_name, last_name, salary
+	    FROM employee
+    </select>
+</mapper>
