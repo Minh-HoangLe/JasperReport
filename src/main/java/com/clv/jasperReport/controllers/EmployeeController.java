@@ -48,7 +48,7 @@ public class EmployeeController {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("title","Test Title");
         JasperReport compileReport = JasperCompileManager.compileReport(new FileInputStream("src/main/resources/reports/employeeReport.jrxml"));
-        JRSaver.saveObject(compileReport, "src/main/resources/reports/employeeReport.jasper");
+        // JRSaver.saveObject(compileReport, "src/main/resources/reports/employeeReport.jasper");
         JasperPrint jasperPrint = JasperFillManager.fillReport(compileReport, parameters, dataSource);
         byte[] data = JasperExportManager.exportReportToPdf(jasperPrint);
 
@@ -61,9 +61,28 @@ public class EmployeeController {
 
     }
 
+    // @GetMapping("/html")
+    // public ResponseEntity<byte[]> exportToHTML() throws FileNotFoundException, JRException {
+    //     JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(service.getAllEmployees(),false);
+    //     Map<String, Object> parameters = new HashMap<>();
+    //     parameters.put("title","Test Title");
+    //     JasperReport compileReport = JasperCompileManager.compileReport(new FileInputStream("src/main/resources/reports/employeeReport.jrxml"));
+    //     // JRSaver.saveObject(compileReport, "src/main/resources/reports/employeeReport.jasper");
+    //     JasperPrint jasperPrint = JasperFillManager.fillReport(compileReport, parameters, dataSource);
+    //     byte[] data = JasperExportManager.exportReportToHtmlFile(jasperPrint,);
+
+	// 	log.info("exportToPDF : {}",data);
+
+	// 	HttpHeaders headers = new HttpHeaders();
+	// 	headers.add("Content-Disposition", "inline; filename=employeesReport.pdf");
+
+	// 	return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
+
+    // }
+
     @ExceptionHandler(EmployeeNotFoundException.class)
 	public ResponseEntity<String> handleEmployeeNotFoundException() {
-		return ResponseEntity.ok("Product Not Found");
+		return ResponseEntity.ok("Employee Not Found");
 	}
 
 }

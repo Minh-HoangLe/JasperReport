@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      th:href="${@mvcResourceUrlProvider.getForLookupPath('/libs/webix/webix.css')}"
+      type="text/css"
+    />
+    <script
+      th:src="${@mvcResourceUrlProvider.getForLookupPath('/libs/webix/webix.js')}"
+      type="text/javascript"
+      charset="utf-8"
+    ></script>
+    <script
+      type="text/javascript"
+      th:src="${@mvcResourceUrlProvider.getForLookupPath('/libs/axios/axios.min.js')}"
+    ></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      webix.ui({
+        rows: [
+          { type: 'header', template: 'Preview' },
+          {
+            cols: [
+              {
+                view: 'button',
+                value: 'Load',
+                click: function () {
+                  $$('pdf').clear();
+                  $$('pdf').define('scale', 'page-width');
+                  $$('pdf').load('binary->http://localhost:8080/employee/pdf');
+                  const res = axios.get('/employee/pdf');
+                  console.log(res)
+                  // $$('pdf').load(function () {
+                  //   return webix.ajax().get('some.php', params);
+                  // });
+                },
+              },
+              { type: 'header', template: 'Preview' },
+            ],
+          },
+          { view: 'resizer' },
+          { view: 'pdfbar', id: 'toolbar' },
+          {
+            view: 'pdfviewer',
+            id: 'pdf',
+            toolbar: 'toolbar',
+            // url: 'binary->files/WebixDocs.pdf',
+          },
+        ],
+      });
+    </script>
+  </body>
+</html>
