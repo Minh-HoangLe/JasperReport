@@ -18,6 +18,7 @@
       type="text/javascript"
       th:src="${@mvcResourceUrlProvider.getForLookupPath('/libs/axios/axios.min.js')}"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/downloadjs@1.4.7/download.min.js"></script>
     <title>Document</title>
   </head>
   <body>
@@ -28,30 +29,60 @@
           {
             cols: [
               {
+                id: 'reportComboId',
+                view: 'combo',
+                label: 'List Report',
+                width: 300,
+                name: 'report',
+                options: [
+                  { id: 1, value: 'Employee Report', fileNm: 'employeeReport' },
+                  { id: 2, value: 'Product Report', fileNm: 'productReport' },
+                ],
+              },
+              {
+                id: 'typeExport',
+                view: 'radio',
+                name: 'type',
+                value: '1',
+                options: [
+                  { id: 'PDF', value: 'PDF' },
+                  { id: 'EXCEL', value: 'EXCEL' },
+                ],
+              },
+              {},
+              {
                 view: 'button',
-                value: 'Load',
+                value: 'Export',
+                width: 100,
                 click: function () {
-                  $$('pdf').clear();
-                  $$('pdf').define('scale', 'page-width');
-                  $$('pdf').load('binary->http://localhost:8080/employee/pdf');
-                  const res = axios.get('/employee/pdf');
-                  console.log(res)
-                  // $$('pdf').load(function () {
-                  //   return webix.ajax().get('some.php', params);
-                  // });
+                  axios
+                    .get('/employee/export', {
+                      params: {
+                        fileName: $$('reportComboId')
+                          .getList()
+                          .getItem($$('reportComboId').getValue()).fileNm,
+                        type: $$('typeExport').getValue(),
+                      },
+                      responseType: 'arraybuffer',
+                    })
+                    .then((res) => {
+                      download(
+                        res.data,
+                        `${(Math.random() * 100000).toFixed(0)}.${
+                          $$('typeExport').getValue() === 'PDF' ? 'pdf' : 'xlsx'
+                        }
+                        `,
+                        res.headers['content-type'],
+                      );
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    });
                 },
               },
-              { type: 'header', template: 'Preview' },
             ],
           },
           { view: 'resizer' },
-          { view: 'pdfbar', id: 'toolbar' },
-          {
-            view: 'pdfviewer',
-            id: 'pdf',
-            toolbar: 'toolbar',
-            // url: 'binary->files/WebixDocs.pdf',
-          },
         ],
       });
     </script>
