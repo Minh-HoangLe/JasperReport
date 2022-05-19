@@ -19,72 +19,13 @@
       th:src="${@mvcResourceUrlProvider.getForLookupPath('/libs/axios/axios.min.js')}"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/downloadjs@1.4.7/download.min.js"></script>
+    <script
+      type="text/javascript"
+      th:src="${@mvcResourceUrlProvider.getForLookupPath('/app/index.js')}"
+    ></script>
     <title>Document</title>
   </head>
   <body>
-    <script type="text/javascript" charset="utf-8">
-      webix.ui({
-        rows: [
-          { type: 'header', template: 'Preview' },
-          {
-            cols: [
-              {
-                id: 'reportComboId',
-                view: 'combo',
-                label: 'List Report',
-                width: 300,
-                name: 'report',
-                options: [
-                  { id: 1, value: 'Employee Report', fileNm: 'employeeReport' },
-                  { id: 2, value: 'Product Report', fileNm: 'productReport' },
-                ],
-              },
-              {
-                id: 'typeExport',
-                view: 'radio',
-                name: 'type',
-                value: '1',
-                options: [
-                  { id: 'PDF', value: 'PDF' },
-                  { id: 'EXCEL', value: 'EXCEL' },
-                ],
-              },
-              {},
-              {
-                view: 'button',
-                value: 'Export',
-                width: 100,
-                click: function () {
-                  axios
-                    .get('/employee/export', {
-                      params: {
-                        fileName: $$('reportComboId')
-                          .getList()
-                          .getItem($$('reportComboId').getValue()).fileNm,
-                        type: $$('typeExport').getValue(),
-                      },
-                      responseType: 'arraybuffer',
-                    })
-                    .then((res) => {
-                      download(
-                        res.data,
-                        `${(Math.random() * 100000).toFixed(0)}.${
-                          $$('typeExport').getValue() === 'PDF' ? 'pdf' : 'xlsx'
-                        }
-                        `,
-                        res.headers['content-type'],
-                      );
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                },
-              },
-            ],
-          },
-          { view: 'resizer' },
-        ],
-      });
-    </script>
+    <div id="widget-Body"></div>
   </body>
 </html>
