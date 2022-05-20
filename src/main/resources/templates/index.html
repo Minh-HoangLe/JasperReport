@@ -9,6 +9,16 @@
       th:href="${@mvcResourceUrlProvider.getForLookupPath('/libs/webix/webix.css')}"
       type="text/css"
     />
+    <link
+            rel="stylesheet"
+            th:href="${@mvcResourceUrlProvider.getForLookupPath('/libs/webix/skins/mini.css')}"
+            type="text/css"
+    />
+    <link
+            rel="stylesheet"
+            th:href="${@mvcResourceUrlProvider.getForLookupPath('/style/css/style.css')}"
+            type="text/css"
+    />
     <script
       th:src="${@mvcResourceUrlProvider.getForLookupPath('/libs/webix/webix.js')}"
       type="text/javascript"
@@ -19,6 +29,7 @@
       th:src="${@mvcResourceUrlProvider.getForLookupPath('/libs/axios/axios.min.js')}"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/downloadjs@1.4.7/download.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script
       type="text/javascript"
       th:src="${@mvcResourceUrlProvider.getForLookupPath('/app/index.js')}"
